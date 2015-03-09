@@ -21,6 +21,7 @@ namespace Kaliko.LogProviders {
 
     internal class FileLogProvider : ILogProvider {
         private readonly string _logfile;
+        private static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
         public FileLogProvider(string filename, Logger.Severity treshold) {
             _logfile = filename;
@@ -36,7 +37,8 @@ namespace Kaliko.LogProviders {
 
         private void WriteToFile(string formattedMessage) {
             string fileName = GetFileName();
-            File.AppendAllText(fileName, formattedMessage);
+            string path = Path.Combine(BaseDirectory, fileName);
+            File.AppendAllText(path, formattedMessage);
         }
 
         private string GetFileName() {

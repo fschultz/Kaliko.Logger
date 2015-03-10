@@ -57,8 +57,10 @@ namespace Kaliko.LogProviders {
             string filename = _logfile;
 
             filename = filename.Replace("%yyyy", currentDate.Year.ToString());
-            filename = filename.Replace("%mm", currentDate.Month.ToString());
-            filename = filename.Replace("%dd", currentDate.Day.ToString());
+            filename = filename.Replace("%mm", currentDate.Month.ToString("00"));
+            filename = filename.Replace("%m", currentDate.Month.ToString());
+            filename = filename.Replace("%dd", currentDate.Day.ToString("00"));
+            filename = filename.Replace("%d", currentDate.Day.ToString());
 
             return filename;
         }

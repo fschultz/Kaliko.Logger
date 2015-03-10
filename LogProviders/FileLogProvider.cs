@@ -21,10 +21,23 @@ namespace Kaliko.LogProviders {
 
     internal class FileLogProvider : ILogProvider {
         private readonly string _logfile;
-
+        
         public FileLogProvider(string filename, Logger.Severity treshold) {
-            _logfile = filename;
+            _logfile = ConvertToAbsolutePath(filename);
             Treshold = treshold;
+        }
+
+        private string ConvertToAbsolutePath(string fileName) {
+            if (fileName.ToLower().StartsWith("|datadirectory|")) {
+                string dataPath = (string)AppDomain.CurrentDomain.GetData("DataDirectory");
+                if (!string.IsNullOrEmpty(dataPath)) {
+                    fileName = string.Format("{0}\\{1}", dataPath, fileName.Substring(15));
+                }
+            }
+
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string path = Path.Combine(baseDirectory, fileName);
+            return path;
         }
 
         public Logger.Severity Treshold { get; set; }
